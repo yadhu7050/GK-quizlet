@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <nav>
+        <h1>QuizMaster</h1>
+        <a href="/">Home</a>
+    </nav>
+    <div class="container">
+        <div class="quiz-container">
+            <h2>Quiz: {{ quiz_title }}</h2>
+            <form action="/submit_quiz" method="post">
+                {% for question in questions %}
+                    <div class="question">
+                        <h3>{{ question.question_text }}</h3>
+                        <div class="options">
+                            {% for option in question.options %}
+                            <label>
+                                <input type="radio" name="question_{{ question.id }}" value="{{ option.id }}">
+                                {{ option.option_text }}
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+                <button id="next-button" type="submit">Submit Quiz</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
