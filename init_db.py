@@ -1,44 +1,107 @@
-from app import app
-from database import db  # Import db from database.py
-from models import Users, Categories, Quizzes, Questions, Answers
+import sqlite3
 
-def init_db():
-    with app.app_context():
-        db.drop_all()
-        db.create_all()
-          # Add initial categories
-        category1 = Categories(name="General Knowledge")
-        category2 = Categories(name="Science")
-        category3 = Categories(name="History")
+def create_tables(conn):
+    cursor = conn.cursor()
 
-        db.session.add_all([category1, category2, category3])
-        db.session.commit()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL
+        )
+    """)
 
-        # Add sample quizzes
-        quiz1 = Quizzes(title="General Knowledge Quiz", category_id=category1.id)
-        quiz2 = Quizzes(title="Science Quiz", category_id=category2.id)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS questions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            question_text TEXT NOT NULL
+        )
+    """)
 
-        db.session.add_all([quiz1, quiz2])
-        db.session.commit()
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS options (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            question_id INTEGER NOT NULL,
+            option_text TEXT NOT NULL,
+            is_correct BOOLEAN DEFAULT FALSE,
+            FOREIGN KEY (question_id) REFERENCES questions(id)
+        )
+    """)
 
-        # Add sample questions for the first quiz
-        question1 = Questions(quiz_id=quiz1.id, text="What is the capital of France?")
-        question2 = Questions(quiz_id=quiz1.id, text="Who wrote 'Hamlet'?")
-        question3 = Questions(quiz_id=quiz2.id, text="What is H2O commonly known as?")
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS results (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL,
+            score INTEGER
+        )
+    """)
 
-        db.session.add_all([question1, question2, question3])
-        db.session.commit()
+    conn.commit()
 
-        # Add sample answers
-        answer_data = [
-            (question1.id, "Berlin", False), (question1.id, "Madrid", False), (question1.id, "Paris", True),
-            (question2.id, "Charles Dickens", False), (question2.id, "William Shakespeare", True), (question2.id, "J.K. Rowling", False),
-            (question3.id, "Water", True), (question3.id, "Oxygen", False), (question3.id, "Hydrogen", False)
-        ]
+def insert_sample_data(conn):
+    cursor = conn.cursor()
 
-        answers = [Answers(question_id=qid, text=text, is_correct=correct) for qid, text, correct in answer_data]
-        db.session.add_all(answers)
-        db.session.commit()
+    # Sample users
+    cursor.execute("INSERT INTO users (username) VALUES (?)", ("admin",))
+    cursor.execute("INSERT INTO users (username) VALUES (?)", ("user1",))
+
+    # Sample questions and options
+    sample_questions = [
+        "What is the capital of India?",
+        "What is the largest ocean on Earth?",
+        "What is the currency of Japan?",
+        "What is the powerhouse of the cell?",
+        "What is the smallest country in the world?",
+        "Which planet is known as the Red Planet?",
+        "Who wrote 'Romeo and Juliet'?",
+        "What is the hardest natural substance on Earth?"
+    ]
+
+    options_data = [
+        (1, "New Delhi", True),
+        (1, "Mumbai", False),
+        (1, "Chennai", False),
+        (1, "Kolkata", False),
+        (2, "Pacific Ocean", True),
+        (2, "Atlantic Ocean", False),
+        (2, "Indian Ocean", False),
+        (2, "Arctic Ocean", False),
+        (3, "Yen", True),
+        (3, "Won", False),
+        (3, "Dollar", False),
+        (3, "Yuan", False),
+        (4, "Mitochondria", True),
+        (4, "Nucleus", False),
+        (4, "Ribosome", False),
+        (4, "Golgi apparatus", False),
+        (5, "Vatican City", True),
+        (5, "Monaco", False),
+        (5, "Nauru", False),
+        (5, "Malta", False),
+        (6, "Mars", True),
+        (6, "Venus", False),
+        (6, "Earth", False),
+        (6, "Jupiter", False),
+        (7, "William Shakespeare", True),
+        (7, "Charles Dickens", False),
+        (7, "Mark Twain", False),
+        (7, "J.K. Rowling", False),
+        (8, "Diamond", True),
+        (8, "Gold", False),
+        (8, "Iron", False),
+        (8, "Quartz", False),
+    ]
+
+    for question_text in sample_questions:
+        cursor.execute("INSERT INTO questions (question_text) VALUES (?)", (question_text,))
+        question_id = cursor.lastrowid
+
+    for option in options_data:
+        cursor.execute("INSERT INTO options (question_id, option_text, is_correct) VALUES (?, ?, ?)", option)
+
+    conn.commit()
 
 if __name__ == "__main__":
-    init_db()
+    conn = sqlite3.connect('instance/db.sqlite')
+    create_tables(conn)
+    insert_sample_data(conn)
+    conn.close()
