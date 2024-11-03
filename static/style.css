@@ -10,13 +10,23 @@ body {
     font-family: 'Arial', sans-serif;
     background-color: #f7f9fc;
     color: #333;
+    transition: background-color 0.3s ease-in-out;
 }
 
 /* Container Styling */
 .container {
     width: 90%;
     max-width: 800px;
-    margin: 0 auto;
+    margin: 20px auto;
+    opacity: 0;
+    animation: fadeIn 0.6s forwards ease-in-out;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
 }
 
 /* Navigation Bar */
@@ -28,11 +38,25 @@ nav {
     justify-content: space-between;
     align-items: center;
     border-bottom: 3px solid #0056b3;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    animation: slideDown 0.5s ease-in-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
 }
 
 nav h1 {
     font-size: 1.5em;
     font-weight: bold;
+    transition: color 0.3s;
 }
 
 nav a {
@@ -41,11 +65,12 @@ nav a {
     font-size: 1.1em;
     padding: 5px 10px;
     border-radius: 5px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 nav a:hover {
     background-color: #0056b3;
+    transform: scale(1.05);
 }
 
 /* Form Styling */
@@ -53,8 +78,20 @@ form {
     background-color: #ffffff;
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
     margin: 20px 0;
+    animation: fadeInUp 0.6s ease-in-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 form h2 {
@@ -73,6 +110,12 @@ form button {
     border-radius: 5px;
     border: 1px solid #ddd;
     font-size: 1em;
+    transition: border-color 0.3s;
+}
+
+form input[type="text"]:focus,
+form input[type="password"]:focus {
+    border-color: #007bff;
 }
 
 form button {
@@ -80,11 +123,12 @@ form button {
     color: white;
     font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s;
 }
 
 form button:hover {
     background-color: #0056b3;
+    transform: scale(1.05);
 }
 
 /* Home Page - Quiz List Styling */
@@ -99,13 +143,15 @@ form button:hover {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     text-align: center;
-    transition: transform 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s;
+    animation: fadeInUp 0.4s ease-in-out;
 }
 
 .quiz-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-8px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 .quiz-card h3 {
@@ -122,11 +168,12 @@ form button:hover {
     color: white;
     text-decoration: none;
     border-radius: 5px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .quiz-card a:hover {
     background-color: #0056b3;
+    transform: scale(1.05);
 }
 
 /* Quiz Page - Question and Options */
@@ -135,7 +182,8 @@ form button:hover {
     background-color: #ffffff;
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 0.5s ease-in-out;
 }
 
 .quiz-container h2 {
@@ -171,11 +219,12 @@ button#next-button {
     border-radius: 5px;
     font-size: 1.1em;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 button#next-button:hover {
     background-color: #0056b3;
+    transform: scale(1.05);
 }
 
 /* Result Page */
@@ -184,8 +233,9 @@ button#next-button:hover {
     background-color: #fff;
     padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     margin-top: 20px;
+    animation: fadeIn 0.6s ease-in-out;
 }
 
 .result-container h2 {
@@ -206,9 +256,10 @@ button#next-button:hover {
     color: white;
     text-decoration: none;
     border-radius: 5px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
 .result-container a:hover {
     background-color: #0056b3;
+    transform: scale(1.05);
 }

@@ -1,25 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/style.css">
-    <title>Quiz Result - QuizMaster</title>
+    <title>Quiz Result</title>
 </head>
 <body>
-    <nav>
-        <h1>QuizMaster</h1>
-        <a href="/">Home</a>
-    </nav>
-    <div class="container">
-        <div class="result-container">
-            <h2>Your Results</h2>
-            <p>Congratulations! You completed the quiz.</p>
-            <p>Your Score: <strong>{{ score }}</strong> out of <strong>{{ total }}</strong></p>
-
-            <p>Would you like to try another quiz?</p>
-            <a href="/">Take Another Quiz</a>
-        </div>
-    </div>
+    <h1>Your Score</h1>
+    <p>You scored <strong>{{ score }}</strong> out of <strong>{{ total_questions }}</strong>.</p>
+    <a href="{{ url_for('home') }}">Take Another Quiz</a>
 </body>
 </html>

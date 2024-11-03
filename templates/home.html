@@ -1,28 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" href="/static/style.css">
+ 
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Quiz App</title>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    
 </head>
 <body>
-    <nav>
-        <h1>QuizMaster</h1>
-        <a href="/logout">Logout</a>
-    </nav>
-    <div class="container">
-        <h2>Select a Quiz</h2>
-        <div class="quiz-list">
-            {% for category, quizzes in quizzes_by_category.items() %}
-                <h3>{{ category }}</h3>
-                <div class="quiz-list">
-                    {% for quiz in quizzes %}
-                    <div class="quiz-card">
-                        <h4>{{ quiz.title }}</h4>
-                        <a href="{{ url_for('quiz', quiz_id=quiz.id) }}">Start Quiz</a>
-                    </div>
-                    {% endfor %}
-                </div>
-            {% endfor %}
-        </div>
-    </div>
+    <h1>Categories</h1>
+    <ul>
+        {% for category in categories %}
+        <li><a href="{{ url_for('category_quizzes', category_id=category.id) }}">{{ category.name }}</a></li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
