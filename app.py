@@ -33,7 +33,7 @@ def start_quiz():
 
     for question in questions:
         question_dict = dict(question)  # Convert sqlite3.Row to dict
-        cursor.execute('SELECT * FROM options WHERE question_id = ?', (question['id'],))
+        cursor.execute('SELECT * FROM options WHERE question_id = ? ORDER BY RANDOM() LIMIT 10', (question['id'],))
         options = cursor.fetchall()
         question_dict['options'] = options  # Add options to the question dict
         questions_with_options.append(question_dict)  # Append to the list
